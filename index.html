@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Syndicate | Group Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Plus+Jakarta+Sans:wght@300;500&display=swap');
+        
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000; color: #fff; }
+        .font-sync { font-family: 'Syncopate', sans-serif; }
+        
+        .slide-enter { transform: translateX(100%); opacity: 0; }
+        .slide-enter-active { transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .slide-exit-active { transform: translateX(-100%); opacity: 0; transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            color: transparent;
+        }
+
+        /* Glass effect for the nav */
+        .nav-blur { backdrop-filter: blur(15px); background: rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body x-data="{ 
+    activeSlide: 0, 
+    members: [
+        { name: 'ERIK VANCE', role: 'CREATIVE DIRECTOR', color: '#3B82F6', quote: 'Design is intelligence made visible.', id: '01' },
+        { name: 'SARA BLISS', role: 'TECH LEAD', color: '#EC4899', quote: 'Code is the poetry of logic.', id: '02' },
+        { name: 'MARCUS JAY', role: 'UX STRATEGIST', color: '#10B981', quote: 'Users first, everything else second.', id: '03' }
+    ] 
+}">
+
+    <nav class="fixed top-0 w-full z-[100] p-6 md:p-10 flex justify-between items-center nav-blur border-b border-white/5">
+        <div class="font-sync font-bold text-xl tracking-tighter cursor-pointer" @click="window.scrollTo(0,0)">AURA.</div>
+        <div class="flex gap-8 text-[10px] font-sync tracking-widest uppercase">
+            <a href="#work" class="hover:text-blue-500 transition-colors duration-300">Work</a>
+            <a href="#contact" class="hover:text-blue-500 transition-colors duration-300">Contact</a>
+        </div>
+    </nav>
+
+    <section class="relative h-screen overflow-hidden border-b border-white/10">
+        <template x-for="(member, index) in members" :key="index">
+            <div 
+                x-show="activeSlide === index"
+                x-transition:enter="slide-enter-active"
+                x-transition:enter-start="slide-enter"
+                x-transition:leave="slide-exit-active"
+                class="absolute inset-0 h-full w-full flex items-center justify-center p-6 md:p-24"
+            >
+                <span class="absolute left-10 top-1/2 -translate-y-1/2 text-[20vw] font-sync font-bold text-outline select-none z-0" x-text="member.id"></span>
+
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center w-full max-w-7xl">
+                    <div class="relative group">
+                        <div class="absolute -inset-4 rounded-full blur-3xl opacity-20" :style="'background-color:' + member.color"></div>
+                        <div class="aspect-[4/5] bg-neutral-900 rounded-2xl overflow-hidden border border-white/10 relative">
+                            <div class="absolute inset-0 flex items-center justify-center text-neutral-800 text-6xl font-bold">PHOTO</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <h3 class="text-blue-500 font-sync text-sm tracking-[0.3em]" x-text="member.role"></h3>
+                        <h2 class="text-5xl md:text-7xl font-sync font-bold leading-none" x-text="member.name"></h2>
+                        <p class="text-xl md:text-2xl text-gray-400 italic font-light" x-text="'&ldquo;' + member.quote + '&rdquo;'"></p>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <div class="absolute bottom-10 left-10 z-50 flex gap-4">
+            <button @click="activeSlide = activeSlide === 0 ? members.length - 1 : activeSlide - 1" 
+                    class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition backdrop-blur-md">
+                ←
+            </button>
+            <button @click="activeSlide = activeSlide === members.length - 1 ? 0 : activeSlide + 1" 
+                    class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/20 transition backdrop-blur-md">
+                →
+            </button>
+        </div>
+    </section>
+
+    <section id="work" class="py-32 px-6 md:px-24">
+        <h2 class="font-sync text-4xl mb-16 tracking-tighter">Selected <span class="text-blue-500">Works</span></h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="group cursor-pointer">
+                <div class="aspect-video bg-neutral-900 rounded-xl mb-4 overflow-hidden border border-white/5 transition-transform duration-500 group-hover:scale-[1.02]">
+                    <div class="w-full h-full bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-gray-700">Project Alpha</div>
+                </div>
+                <h4 class="font-sync text-sm tracking-widest">ECOMMERCE REDESIGN</h4>
+            </div>
+            <div class="group cursor-pointer">
+                <div class="aspect-video bg-neutral-900 rounded-xl mb-4 overflow-hidden border border-white/5 transition-transform duration-500 group-hover:scale-[1.02]">
+                    <div class="w-full h-full bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-gray-700">Project Beta</div>
+                </div>
+                <h4 class="font-sync text-sm tracking-widest">AI DASHBOARD</h4>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 bg-neutral-950 px-6 text-center">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="font-sync text-5xl md:text-7xl mb-8 leading-tight">Ready to <span class="text-outline">Create?</span></h2>
+            <p class="text-gray-400 text-lg mb-12">We’re currently accepting new projects. Let’s build something that matters.</p>
+            <a href="mailto:hello@aura.com" class="inline-block px-12 py-5 bg-white text-black font-sync text-xs tracking-[0.3em] rounded-full hover:bg-blue-500 hover:text-white transition-all duration-300">
+                START A PROJECT
+            </a>
+        </div>
+    </section>
+
+    <footer class="p-10 border-t border-white/5 text-[10px] font-sync text-gray-600 flex justify-between items-center">
+        <p>© 2026 AURA SYNDICATE</p>
+        <p>ALL RIGHTS RESERVED</p>
+    </footer>
+
+    <div class="fixed bottom-0 left-0 h-1 bg-blue-600 z-[100] transition-all duration-700" 
+         :style="'width: ' + ((activeSlide + 1) / members.length * 100) + '%'">
+    </div>
+
+</body>
+</html>
